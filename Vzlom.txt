@@ -1,7 +1,0 @@
-Успех
-
-
-
-
-
-vless://44867118-2d31-4767-8c0a-a4b7f2dc11dc@0.0.0.0:1?encryption=none&flow=xtls-rprx-vision&security=reality&type=tcp&sni=expired.example.com&fp=chrome&pbk=00000000000000000000000000000000000000000000000&sid=0000#%D0%9B%D0%B8%D0%BC%D0%B8%D1%82%20%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2
